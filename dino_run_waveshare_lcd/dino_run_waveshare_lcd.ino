@@ -3,10 +3,9 @@
 // and the Waveshare LCD1602 I2C Module (AiP31068L controller).
 //
 // NOTE: This module is NOT a generic PCF8574 "backpack" board, so it uses
-// the Waveshare_LCD1602 library instead of LiquidCrystal_I2C. Install it via:
-// Arduino IDE > Sketch > Include Library > Add .ZIP Library, using the
-// Waveshare_LCD1602 folder from Waveshare's LCD1602_I2C_Module_Demo.zip
-// (Arduino/Waveshare_LCD1602).
+// the Waveshare_LCD1602 library instead of LiquidCrystal_I2C. 
+// Add the Waveshare_LCD1602 lib to your Arduino libraries folder.
+// See: https://www.waveshare.com/wiki/LCD1602_I2C_Module.
 //
 // Long press (20 seconds) on Highscore screen = Clears the highscore
 // Long press (2 seconds) on Dino-Run screen = Secret Mode (Defuse Bomb)
@@ -37,8 +36,7 @@
 
 // Main Game & Menus
 const char* txtTitle       = "   DINO RUN   ";
-const char* txtNamesAlt1   = "Name1 & Name2 "; // Alternating name 1
-const char* txtNamesAlt2   = "Name2 & Name1 "; // Alternating name 2
+const char* txtName        = "Henry          "; // Adjust your name here
 const char* txtLevelUp     = "!!! LEVEL ";
 const char* txtLevelUpEnd  = " !!!";
 const char* txtBestScore   = "BEST: ";
@@ -82,21 +80,19 @@ const char* eeInaccurate   = "Too inaccurate! ";
 // Invitation (Pages 1-7)
 const char* invPage1L1     = "Invitation to   ";
 const char* invPage1L2     = "Birthday Party  ";
-const char* invPage2Name1  = "From: Name1 and "; // Adjust your names here
-const char* invPage2Name2  = "From: Name2 and ";
-const char* invPage2Name1B = "Name2           "; 
-const char* invPage2Name2B = "Name1           ";
-const char* invPage3Date   = "Oct 27 at 08:30 ";
-const char* invPage3Scroll = "      We will pick you up!   "; // Scrolling text
+const char* invPage2L1     = "From:           "; // Adjust your name here
+const char* invPage2L2     = "Henry K         ";
+const char* invPage3Date   = "August 2nd at 12:00";
+const char* invPage3Scroll = "      We will meet at Betty's Burgers @ Glenelg!   "; // Scrolling text
 const char* invPage4L1     = "We are going to ";
-const char* invPage4L2     = "THE POOL        ";
-const char* invPage5L1     = "Swimwear        ";
+const char* invPage4L2     = "My House        ";
+const char* invPage5L1     = "Devices        ";
 const char* invPage5L2Show = "DO NOT forget   "; // Blinking effect
 const char* invPage5L2Hide = "       forget   ";
 const char* invPage6L1     = "Ends at approx. ";
-const char* invPage6L2     = "2:00 PM         ";
+const char* invPage6L2     = "5:00 PM         ";
 const char* invPage7L1     = "Please RSVP by  ";
-const char* invPage7L2     = "Feb 20th!       ";
+const char* invPage7L2     = "July 29th!       ";
 
 
 // =====================================================================
@@ -502,13 +498,7 @@ void showGameOver() {
 
 void showGameStart() {
   lcd.setCursor(0, 0); lcd.send_string(txtTitle); lcd.write_char(0);
-  
-  // Blinking names every 2 seconds
-  if ((millis() / 2000) % 2 == 0) {
-    lcd.setCursor(0, 1); lcd.send_string(txtNamesAlt1);
-  } else {
-    lcd.setCursor(0, 1); lcd.send_string(txtNamesAlt2);
-  }
+  lcd.setCursor(0, 1); lcd.send_string(txtName);
 
   // Activate Easter Egg if button held for 2 seconds
   if (digitalRead(buttonPin) == LOW) {
@@ -638,19 +628,14 @@ void showInvitation() {
     lcd.setCursor(0, 1); lcd.send_string(invPage1L2); 
   }
   else if (invitationPage == 2) {
-    if ((millis() / 2000) % 2 == 0) { 
-      lcd.setCursor(0, 0); lcd.send_string(invPage2Name1); 
-      lcd.setCursor(0, 1); lcd.send_string(invPage2Name1B); 
-    } else { 
-      lcd.setCursor(0, 0); lcd.send_string(invPage2Name2); 
-      lcd.setCursor(0, 1); lcd.send_string(invPage2Name2B); 
-    }
+    lcd.setCursor(0, 0); lcd.send_string(invPage2L1);
+    lcd.setCursor(0, 1); lcd.send_string(invPage2L2);
   }
   else if (invitationPage == 3) { 
     lcd.setCursor(0, 0); lcd.send_string(invPage3Date);      
     // Create scrolling effect using the String object
     String lText = invPage3Scroll; 
-    int pos = (millis() / 1000) % lText.length();
+    int pos = (millis() / 500) % lText.length();
     String displayStr = lText.substring(pos) + lText.substring(0, pos); 
     lcd.setCursor(0, 1); lcd.send_string(displayStr.substring(0, 16).c_str());
   }
