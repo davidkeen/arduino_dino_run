@@ -90,7 +90,7 @@ const char* invPage5L1     = "Devices        ";
 const char* invPage5L2Show = "DO NOT forget   "; // Blinking effect
 const char* invPage5L2Hide = "       forget   ";
 const char* invPage6L1     = "Ends at approx. ";
-const char* invPage6L2     = "5:00 PM         ";
+const char* invPage6L2     = "6:00 PM (Pickup)";
 const char* invPage7L1     = "Please RSVP by  ";
 const char* invPage7L2     = "July 29th!       ";
 
